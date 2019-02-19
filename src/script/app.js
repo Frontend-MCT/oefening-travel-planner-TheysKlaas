@@ -1,12 +1,40 @@
-let countryHolder;
+let countryHolder,
+    amountHolder;
 const localKey = 'travel-planner';
 
-const hasItem = key => {};
-const addItem = key => {}; 
-const removeItem = key => {};
-// const allItems = key => {};
-const countItems = key => {};
 
+
+const addItem = key => {
+    let countries = getAllItems(); // array ophalen
+    countries.push(key);
+    localStorage.setItem(localKey, JSON.stringify(countries));
+}; 
+const removeItem = key => {
+    const index = getAllItems().indexOf(key); // waar staat het land dat weg mag?
+    let savedCountries = getAllItems();
+    savedCountries.splice(index,1); // verwijder dat item in de array
+    localStorage.setItem(localKey, JSON.stringify(savedCountries));
+};
+const getAllItems = () => {
+    // if (localStorage.hasItem(localKey)){
+    //     return localStorage.getItem(localKey);  
+    // }
+    // else{
+    //     return []
+    // }
+    return JSON.parse(localStorage.getItem(localKey)) || [];
+};
+const countItems = () => {
+    return getAllItems().length;
+};
+const hasItem = key => {
+    //return ~getAllItems().indexOf(key); // -1 if not founc , anders de positie.
+    return getAllItems().includes(key)
+};
+
+const updateCounter = () => {
+   amountHolder.innerHTML = countItems();
+};
 
 const addListenersToCountries = function(classSelector){
     const countries = document.querySelectorAll(classSelector);
@@ -14,8 +42,14 @@ const addListenersToCountries = function(classSelector){
         country.addEventListener('click', function(){
             console.log('you clicked me', this);
             // functies schrijven voor local storage => opsplitsen!!
-            
-            
+            const countryKey = this.getAttribute('for');
+            if (hasItem(countryKey)){
+                removeItem(countryKey);
+            }
+            else{
+                addItem(countryKey);
+            }
+            updateCounter();            
         })
     }
 }
@@ -54,7 +88,7 @@ const showCountries = data => {
         //2 build an html string for each country
         countries += `
         <article>
-                    <input id="${c.cioc}-${c.alpha2Code}" class="o-hide c-country-input" type="checkbox" name="">
+                    <input id="${c.cioc}-${c.alpha2Code}" class="o-hide c-country-input" type="checkbox" name="" ${(hasItem(c.cioc + '-' + c.alpha2Code)) ? 'checked="checked"' : ''}>
                     <label for="${c.cioc}-${c.alpha2Code}" class="c-country js-country">
                         <div class="c-country-header">
                             <h2 class="c-country-header__name">${c.name}</h2>
@@ -97,14 +131,16 @@ const enableListeners= () => {
         });
     }
     countryHolder = document.querySelector('.js-country-holder');
+    amountHolder =  document.querySelector('.js-amount');
 
     // always start with Europe
     fetchCountries('europe');
+    updateCounter();
 };
 const init = () => {
     console.log('init (DOM is geladen 😊)')
     enableListeners();
-    checkboxListener();
+    //checkboxListener();
 };
 
 document.addEventListener('DOMContentLoaded', init);
