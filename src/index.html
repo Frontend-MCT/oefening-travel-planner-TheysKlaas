@@ -28,8 +28,9 @@
  -->
 
     <!-- EMMET ABRV: div.o-grid>aside.c-sidebar>nav.c-menu>ul.c-menu__list>li.c-menu__item*5>a.c-menu__link -->
-    <div class="o-grid u-grid-main-layout">
-        <aside class="c-sidebar">
+    <div class="o-grid u-grid-main-layout js-maingrid">
+        <img class="c-sidebar-burger js-burger" src="hamburger.svg" alt="">
+        <aside class="c-sidebar js-sidebar">
             <header class="c-sidebar-header">
                 <img class="c-sidebar-header__image" src="favicon-32.png" alt="Important for SEO!" title="Hover me">
                 <h1 class="c-sidebar-header__title">Travel Planner</h1>
@@ -55,7 +56,8 @@
                 </ul>
             </nav>
             <div class="c-sidebar-counter">
-                <em class="u-color-alpha js-amount">18</em> / 250
+                <em class="u-color-alpha js-amount"></em> / 250
+                <button class="c-sidebar-counter__reset js-reset-counter">Reset progress</button>
             </div>
         </aside>
         <main class="c-content">
@@ -63,6 +65,9 @@
             <div class="o-grid u-grid-overview js-country-holder">
 
             </div>
+            <aside class="c-notifications js-notification-holder">
+
+            </aside>
         </main>
     </div> 
 </body>
